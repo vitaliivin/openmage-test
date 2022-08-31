@@ -1,0 +1,57 @@
+version: '2.4'
+services:
+  mysql-5-7:
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
+      target: mysql-5-7
+    container_name: mage_mysql_5_7
+    restart: unless-stopped
+    command: --explicit_defaults_for_timestamp --default-authentication-plugin=mysql_native_password
+    networks:
+      open-mage: {}
+    cpus: 2
+    mem_limit: 4294967296
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      - '3309:3306'
+    volumes:
+      - mysql:/var/lib/mysql
+  redis-7-0:
+    image: redis:7.0.4-alpine
+    container_name: mage_redis_7_0
+    restart: unless-stopped
+    networks:
+      open-mage: {}
+    cpus: 2
+    mem_limit: 1073741824
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis-7-0:/data
+  php-7-4-apache:
+    build:
+      context: .
+      dockerfile: docker/php-apache/local/Dockerfile
+      args:
+        MAGE_CA_ROOT_CRT: config/cert/server.local.crt
+    container_name: mage_backend
+    volumes:
+      - ./:/var/www/api
+      - ./config/cert:/ssl:ro
+    restart: always
+    cpus: 2
+    mem_limit: 2147483648 # 1024*1024*1024 * 2
+    ports:
+      - '8445:443'
+    networks:
+      open-mage:
+        aliases:
+          - openmage-test.local
+volumes:
+  mysql:
+  redis-7-0:
+networks:
+  open-mage:
+    external: true
