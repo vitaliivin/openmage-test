@@ -1,7 +1,8 @@
 {
     "require": {
         "aydin-hassan/magento-core-composer-installer": "*",
-        "openmage/magento-lts": "19.4.6"
+        "openmage/magento-lts": "19.4.6",
+        "aschroder/smtp_pro": "2.0.*"
     },
     "extra": {
         "magento-core-package-type": "magento-source",
