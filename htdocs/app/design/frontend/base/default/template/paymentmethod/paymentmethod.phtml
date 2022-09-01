@@ -1,0 +1,16 @@
+<?php $_code=$this->getMethodCode(); ?>
+
+<div class="form-list" id="payment_form_<?php echo $_code; ?>" style="display:none;">
+    <div>
+        <label><?php echo $this->__('Custom Amount') ?>*</label>
+        <span>
+          <input type="text" title="<?php echo $this->__('Custom amount') ?>"
+                 name="payment[cstm_paymentamnt]"
+                 value="<?php echo $this->htmlEscape($this->getInfoData('cstm_paymentamnt')) ?>"
+                 id="<?php echo $_code ?>_cstm_paymntamnt" />
+        </span>
+    </div>
+</div>
+<div>
+    <?php echo $this->getMethod()->getConfigData('message');?>
+</div>
